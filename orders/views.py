@@ -16,11 +16,22 @@ def order_create(request):
             form = OrderCreateForm(request.POST)
             if form.is_valid():
                 order = form.save()
+                request.session['order'] = order.id
                 for item in cart:
+                    data_accs = item['product'].psw_and_lg.split(":")
+                    lst = []
+                    count = 0
+                    while len(lst)!=item['quantity']:
+                        lst.append(data_accs[count])
+                        del data_accs[count]
+                        count+=1
+                    item['product'].psw_and_lg = ':'.join(data_accs)
+                    item['product'].save()
                     OrderItem.objects.create(order=order,
                                             product=item['product'],
                                             price=item['price'],
-                                            quantity=1)
+                                            quantity=item['quantity'],
+                                            data_of_acc='\n'.join(lst))
                 # очистка корзины
                 change_bal(request, cart, balance_user['balance'])
                 off_products(cart_us=cart)
