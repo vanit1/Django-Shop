@@ -1,0 +1,22 @@
+{% extends "Products/base.html" %}
+
+{{title}}
+
+{% block content %}
+    <div class="order-info">
+        <ul>
+            {% for item in cart %}
+                <li>
+                    {{ item.quantity }}x {{ item.product.name }}
+                    <span>${{ item.total_price }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Всього: ${{ cart.get_total_price }}</p>
+    </div>
+    <form action="{% url 'order:order_create' %}" method="post" class="registration-form">
+        {{ form.as_p }}
+        <p><input type="submit" value="Place order"></p>
+        {% csrf_token %}
+    </form>
+{% endblock %}

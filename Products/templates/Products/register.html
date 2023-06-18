@@ -1,0 +1,11 @@
+{% extends 'Products/base.html' %}
+
+{{title}}
+
+{% block content %}
+  <form method="post" class="registration-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Реєстрація">
+  </form>
+{% endblock content %}

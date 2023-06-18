@@ -1,0 +1,40 @@
+{% extends 'Products/base.html' %}
+{% load products_tag %}
+{% load static %}
+
+<link type="text/css" href="{% static 'Products/css/styles.css' %}" rel='stylesheet' />
+
+{% block content %}
+
+<div class="product-card">
+    <img src="{{ product.photo.url }}" alt="Product Image">
+    <div class="product-info">
+      <h3 class="product-name">{{product.name}}</h3>
+      <p class="product-description">Опис: {{product.text_about}}</p>
+      <p class="product-description">Кількість: {{product.quantity}}</p>
+      {% if product.sale %}
+      <p class="product-price">Ціна за шт: {{product|go_sale}}</p>
+      {% else %}
+      <p class="product-price">Ціна за шт: {{product.price}}</p>
+      {% endif %}
+      {% if in_cart_full %}
+      Товар уже в корзині
+      {% else %}
+    <form class="product-form" action="{% url 'cart:cart_add' product.slug %}" method="post">
+      {% if error %}
+      <div class="error-message">
+        <p>{{error}}</p>
+      </div> 
+      {% endif %}
+        {% csrf_token %}
+        {{form}}
+        {% if form %}
+        {% endif %}
+      <button class="buttonses" type="submit">В корзину</button>
+    </form>
+    {% endif %}
+    </div>
+  </div>
+        {% endblock content %}
+
+ 

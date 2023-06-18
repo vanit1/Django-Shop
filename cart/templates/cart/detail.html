@@ -1,0 +1,92 @@
+{% extends "Products/base.html" %}
+{% load static %}
+
+<link type="text/css" href="{% static 'Products/css/styles.css' %}" rel='stylesheet' />
+
+
+
+{% block content %}
+{% if error %}
+      <div class="error-message-order">
+        <p>{{error}}</p>
+      </div> 
+      {% endif %}
+<main>
+    <table>
+      <thead>
+        <tr>
+          <th class="letterses">Наименование</th>
+          <th class="letterses">Количество</th>
+          <th class="letterses">Цена</th>
+          <th class="letterses">Сумма</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                <td><a class="del-product" href="{% url 'products:product' product.slug %}">{{product.name}}</a><a href="{% url 'cart:cart_remove' product.slug %}"><button class="delete-button">
+                  <i class="fas fa-trash"></i> Удалить товар
+                </button></a></td>
+                <td>{{ item.quantity }}</td>
+                <td class="num">${{ item.price }}</td>
+                <td class="num">${{ item.total_price }}</td>
+                </tr>
+            {% endwith %}
+            {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">Итого:</td>
+          <td>{{ cart.get_total_price }}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="buttons">
+      <a href="{% url 'order:order_create' %}" class="button">Оформить заказ</a>
+      <a href="{% url 'cart:cart_clear' %}" class="button">Очистить корзину</a>
+    </div>
+  </main>
+    <!-- <h1>Your shopping cart</h1>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+            <th>Unit price</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{% url 'products:product' product.slug %}">
+                            <img class="photo-cart" src="{{ product.photo.url }}">
+                        </a>
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{% url "cart:cart_remove" product.slug%}">Remove</a></td>
+                    <td class="num">${{ item.price }}</td>
+                    <td class="num">${{ item.total_price }}</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">${{ cart.get_total_price }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url "products:home" %}" class="button light">Continue shopping</a>
+        <a href="{% url "order:order_create" %}" class="button">
+            Оформити замовлення
+        </a>
+    </p> -->
+{% endblock %}

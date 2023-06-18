@@ -1,0 +1,12 @@
+{% extends 'Products/base.html' %}
+
+{{title}}
+
+{% block content %}
+<form class="registration-form" method='post'>
+    {{form.as_p}}
+    {% csrf_token %}
+    <input type="submit" value="Увійти">
+    <a class="for-reg" href="{% url 'products:register' %}">Зареєструватися</a>
+</form>
+{% endblock content %}
