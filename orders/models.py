@@ -1,9 +1,10 @@
 from django.db import models
-from Products.models import Product
+from Products.models import *
 
 
 
 class Order(models.Model):
+    _user = models.ForeignKey(UserDetail, related_name="orders", on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     email = models.EmailField()
     created = models.DateTimeField(auto_now_add=True)

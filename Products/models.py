@@ -16,6 +16,12 @@ class UserDetail(models.Model):
         verbose_name_plural = 'Інфо юзерів'
         ordering = ['id']
 
+    def __str__(self) -> str:
+        return self.user_old.username
+
+    def __repr__(self) -> str:
+        return self.user_old.username
+
 
 
 class Product(models.Model):

@@ -12,7 +12,7 @@ from .utils import *
 from django.urls import *
 from .forms import RegisterUserForm
 from cart.forms import CartAddProductForm
-# from .context_process import balance
+from orders.models import *
 
 
 # class RegUser(DataMixin, CreateView):
@@ -104,5 +104,18 @@ class ProductDetail(DetailView, DataMixin):
         context['form'] = CartAddProductForm()
         return dict(list(context.items()) + list(gt_ret.items()))
     
-def get_accounts(request):
-    return render(request, 'Products/accounts.html', {'title': 'Акаунти'})
+
+class Accounts(ListView, DataMixin):
+    model = Order
+    context_object_name = 'orders'
+    template_name = 'Products/accounts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        gt_ret = self.context_object_return(req=self.request, title="Акаунти")
+        return dict(list(context.items()) + list(gt_ret.items()))
+
+    def get_queryset(self):
+        us = User.objects.get(username=self.request.user.username)
+        us_det = UserDetail.objects.get(user_old=us)
+        return us_det.orders.all()

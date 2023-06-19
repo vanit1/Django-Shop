@@ -5,9 +5,25 @@
 
 {% block content %}
 <div class="account-info">
-    <h2>Данные вашего аккаунта</h2>
-    <p>Логин: <span class="account-login">[логин аккаунта]</span></p>
-    <p>Пароль: <span class="account-password">[пароль аккаунта]</span></p>
-    <p>Электронная почта: <span class="account-email">[электронная почта аккаунта]</span></p>
+{% if orders %}
+    {% for ord in orders %}
+      {% for it in ord.items.all %}
+      <ul>
+        <li>
+          <h2>{{it.product}}</h2>
+            {% for i in it.data_of_acc.split %}
+            {% if forloop.counter0 == 0 %}
+            <p>Логин: <span class="account-login">{{i}}</span></p>
+            {% else %}
+            <p>Пароль: <span class="account-password">{{i}}</span></p>
+            {% endif %}
+            {% endfor %}
+        </li>
+      </ul>
+      {% endfor %}
+    {% endfor %}
   </div>
+{% else %}
+<h2>На жаль, в тебе поки нема куплених акаунтів</h2>
+{% endif %}
 {% endblock content %}

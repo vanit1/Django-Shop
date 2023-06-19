@@ -13,10 +13,13 @@ def order_create(request):
     balance_user = balance(request)
     if request.method == 'POST':
         if check_balance(cart_us=cart, balance=balance_user['balance']):
+            us = User.objects.get(username=request.user.username)
+            us_det = UserDetail.objects.get(user_old=us)
             form = OrderCreateForm(request.POST)
             if form.is_valid():
-                order = form.save()
-                request.session['order'] = order.id
+                order = form.save(commit=False)
+                order._user = us_det
+                order.save()
                 for item in cart:
                     data_accs = item['product'].psw_and_lg.split(":")
                     lst = []
@@ -25,7 +28,7 @@ def order_create(request):
                         lst.append(data_accs[count])
                         del data_accs[count]
                         count+=1
-                    item['product'].psw_and_lg = ':'.join(data_accs)
+                    item['product'].psw_and_lg = ' '.join(data_accs)
                     item['product'].save()
                     OrderItem.objects.create(order=order,
                                             product=item['product'],
