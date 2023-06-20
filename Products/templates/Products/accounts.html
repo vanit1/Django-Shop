@@ -11,13 +11,7 @@
       <ul>
         <li>
           <h2>{{it.product}}</h2>
-            {% for i in it.data_of_acc.split %}
-            {% if forloop.counter0 == 0 %}
-            <p>Логин: <span class="account-login">{{i}}</span></p>
-            {% else %}
-            <p>Пароль: <span class="account-password">{{i}}</span></p>
-            {% endif %}
-            {% endfor %}
+          {{it.data_of_acc}}
         </li>
       </ul>
       {% endfor %}

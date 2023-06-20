@@ -23,12 +23,10 @@ def order_create(request):
                 for item in cart:
                     data_accs = item['product'].psw_and_lg.split(":")
                     lst = []
-                    count = 0
                     while len(lst)!=item['quantity']:
-                        lst.append(data_accs[count])
-                        del data_accs[count]
-                        count+=1
-                    item['product'].psw_and_lg = ' '.join(data_accs)
+                        lst.append(data_accs[0])
+                        del data_accs[0]
+                    item['product'].psw_and_lg = ':'.join(data_accs)
                     item['product'].save()
                     OrderItem.objects.create(order=order,
                                             product=item['product'],
